@@ -8,12 +8,15 @@ const protectedRouter = require('./src/controllers/protected-route');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
+app.use(session({ secret: 'somevalue' }));
+mongoose.set('strictQuery', false);
+
 require('dotenv').config();
 
 app.set('view engine', 'ejs');
 
-const connectToMongoDb = () => {
-  mongoose
+const connectToMongoDb = async () => {
+  await mongoose
     .connect(process.env.MONGODB_URI)
     .then(() => console.log('Connected to MongoDb..'))
     .catch((error) => {
